@@ -19,7 +19,7 @@ module Pod
     # @return [Bool] whether the target needs to be scoped by target definition,
     #         because the spec is used with different subspec sets across them.
     #
-    attr_accessor :scoped
+    attr_reader :scoped
     alias_method :scoped?, :scoped
 
     # @param [Array<Specification>] @spec #see spec
@@ -42,8 +42,8 @@ module Pod
     # @return [PodTarget] the same target, but scoped.
     #
     def scoped
-      clone.tap do |scoped_target|
-        scoped_target.scoped = true
+      target_definitions.map do |target_definition|
+        PodTarget.new(specs, [target_definition], sandbox, true)
       end
     end
 
